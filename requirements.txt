@@ -1,0 +1,16 @@
+streamlit
+pandas
+json5
+matplotlib
+sentence-transformers
+faiss-cpu
+vosk
+pyaudio
+requests
+gspread
+oauth2client
+scikit-learn
+numpy
+python-dotenv
+wordcloud
+transformers
