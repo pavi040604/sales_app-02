@@ -1,5 +1,13 @@
 FROM python:3.9-slim
 
+# Install system dependencies for PyAudio and other packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    libasound2-dev \
+    portaudio19-dev \
+    && apt-get clean
+
 # Set the working directory inside the container
 WORKDIR /app
 
@@ -14,9 +22,6 @@ COPY . /app/
 
 # Expose the port that Streamlit will run on
 EXPOSE 8501
-
-# Set environment variables (if needed)
-# ENV VAR_NAME=value
 
 # Command to run the Streamlit app
 CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
