@@ -1,0 +1,80 @@
+{
+    "interactions": [
+        {
+            "transcription": "i like the product",
+            "sentiment": {
+                "label": "POSITIVE",
+                "score": 0.9997944235801697
+            },
+            "product_recommendations": [
+                [
+                    "Body Lotion",
+                    "SmoothSilk: Hydrating body lotion with shea butter and aloe vera."
+                ],
+                [
+                    "Bathrobe",
+                    "CloudSoft: Plush microfiber bathrobe with pockets and waist tie."
+                ],
+                [
+                    "Portable Blender",
+                    "BlendPro: USB rechargeable portable blender for smoothies and shakes."
+                ]
+            ],
+            "objection_handling": {
+                "objection": "I like the product",
+                "response": "great!anything else you need?"
+            }
+        },
+        {
+            "transcription": "i don't like it too big",
+            "sentiment": {
+                "label": "NEGATIVE",
+                "score": 0.8886666297912598
+            },
+            "product_recommendations": [
+                [
+                    "Bathrobe",
+                    "CloudSoft: Plush microfiber bathrobe with pockets and waist tie."
+                ],
+                [
+                    "Outdoor Blanket",
+                    "BeachCozy: Oversized outdoor blanket with water-resistant backing."
+                ],
+                [
+                    "Electric Griddle",
+                    "GrillMaster: Large electric griddle with non-stick surface and adjustable temperature."
+                ]
+            ],
+            "objection_handling": {
+                "objection": "Seems too bulky",
+                "response": "We offer slimmer versions that maintain all the features while saving space."
+            }
+        },
+        {
+            "transcription": "i lie",
+            "sentiment": {
+                "label": "NEGATIVE",
+                "score": 0.9994606375694275
+            },
+            "product_recommendations": [
+                [
+                    "Hair Shampoo",
+                    "Organic shampoo for all hair types, infused with essential oils."
+                ],
+                [
+                    "Weighted Blanket",
+                    "CalmComfort: Ultra-soft weighted blanket for better sleep and relaxation."
+                ],
+                [
+                    "Outdoor Blanket",
+                    "BeachCozy: Oversized outdoor blanket with water-resistant backing."
+                ]
+            ],
+            "objection_handling": {
+                "objection": "I need to think about it",
+                "response": "Take your time. Let me know if you have any questions or need more details to decide."
+            }
+        }
+    ],
+    "timestamp": "2025-01-23 17:43:07"
+}
