@@ -1,22 +1,22 @@
-FROM python:3.9
+FROM python:3.9-slim
 
-# Install build dependencies and PortAudio
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    gcc \
-    libffi-dev \
-    libssl-dev \
-    portaudio19-dev \
-    && apt-get clean
-
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the contents of the current directory to /app in the container
-COPY . /app
+# Copy the requirements.txt file into the container
+COPY requirements.txt /app/
 
-# Install dependencies from requirements.txt
+# Install the Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Command to run the app
-CMD ["python", "app.py"]
+# Copy the entire project directory into the container
+COPY . /app/
+
+# Expose the port that Streamlit will run on
+EXPOSE 8501
+
+# Set environment variables (if needed)
+# ENV VAR_NAME=value
+
+# Command to run the Streamlit app
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
