@@ -1,11 +1,12 @@
 FROM python:3.9
 
-# Install build dependencies
+# Install build dependencies and PortAudio
 RUN apt-get update && apt-get install -y \
     build-essential \
     gcc \
     libffi-dev \
     libssl-dev \
+    portaudio19-dev \
     && apt-get clean
 
 # Set the working directory
