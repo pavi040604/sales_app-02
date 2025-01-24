@@ -7,8 +7,6 @@ import faiss
 import vosk
 import pyaudio
 import requests
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 from sklearn.linear_model import LinearRegression
 import numpy as np
@@ -88,19 +86,6 @@ def analyze_sentiment(text):
     return {"label": "ERROR", "score": 0.0}
 
 # Google Sheets API setup
-@st.cache_resource
-def setup_google_sheets():
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
-    client = gspread.authorize(creds)
-    sheet = client.open("sheet").sheet1
-    return sheet
-
-sheet = setup_google_sheets()
-
-def append_to_sheet(sentiment, transcription):
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    sheet.append_row([timestamp, sentiment['label'], sentiment['score'], transcription])
 
 def recommend_products(query):
     query_embedding = model.encode([query])
@@ -285,8 +270,7 @@ if st.button("Start Listening"):
                     previous_sentiment = sentiment['label']  # Update previous sentiment
 
                     # Save to Google Sheets
-                    append_to_sheet(sentiment, transcription)
-                    st.success("Data saved to Google Sheets.")
+                    
 
                     # Add interaction to session data and update JSON file
                     interaction = {
