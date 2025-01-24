@@ -1,19 +1,17 @@
+# Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    portaudio19-dev \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy project files into the container
+# Copy all files from the current directory to /app in the container
 COPY . /app
 
-# Install Python dependencies
+# Install the required dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Run the Streamlit app
-CMD ["streamlit", "run", "app.py", "--server.port=5000", "--server.address=0.0.0.0"]
+# Expose port 5000 for Streamlit
+EXPOSE 5000
+
+# Run the app when the container starts
+CMD ["streamlit", "run", "app.py"]
