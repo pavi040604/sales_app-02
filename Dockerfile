@@ -1,17 +1,21 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM python:3.9
 
-# Set the working directory inside the container
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    libffi-dev \
+    libssl-dev \
+    && apt-get clean
+
+# Set the working directory
 WORKDIR /app
 
-# Copy all files from the current directory to /app in the container
+# Copy the contents of the current directory to /app in the container
 COPY . /app
 
-# Install the required dependencies
+# Install dependencies from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 5000 for Streamlit
-EXPOSE 5000
-
-# Run the app when the container starts
-CMD ["streamlit", "run", "app.py"]
+# Command to run the app
+CMD ["python", "app.py"]
