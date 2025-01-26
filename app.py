@@ -7,12 +7,14 @@ import faiss
 import vosk
 import pyaudio
 import requests
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 from sklearn.linear_model import LinearRegression
 import numpy as np
 from dotenv import load_dotenv
 import os
-
+from transformers import RagTokenizer, RagRetriever, RagSequenceForGeneration
 # Load .env file
 load_dotenv()
 
@@ -40,6 +42,9 @@ responses = objections_data['response'].tolist()
 def initialize_models():
     model = SentenceTransformer('all-MiniLM-L6-v2')
     vosk_model = vosk.Model(model_path)
+    rag_tokenizer = RagTokenizer.from_pretrained("facebook/rag-token-nq")
+    rag_retriever = RagRetriever.from_pretrained("facebook/rag-token-nq", index_name="custom", passages_path=prod_path)
+    rag_model = RagSequenceForGeneration.from_pretrained("facebook/rag-token-nq")
     return model, vosk_model
 
 model, vosk_model = initialize_models()
@@ -86,6 +91,19 @@ def analyze_sentiment(text):
     return {"label": "ERROR", "score": 0.0}
 
 # Google Sheets API setup
+@st.cache_resource
+def setup_google_sheets():
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+    client = gspread.authorize(creds)
+    sheet = client.open("sheet").sheet1
+    return sheet
+
+sheet = setup_google_sheets()
+
+def append_to_sheet(sentiment, transcription):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    sheet.append_row([timestamp, sentiment['label'], sentiment['score'], transcription])
 
 def recommend_products(query):
     query_embedding = model.encode([query])
@@ -270,7 +288,8 @@ if st.button("Start Listening"):
                     previous_sentiment = sentiment['label']  # Update previous sentiment
 
                     # Save to Google Sheets
-                    
+                    append_to_sheet(sentiment, transcription)
+                    st.success("Data saved to Google Sheets.")
 
                     # Add interaction to session data and update JSON file
                     interaction = {
